@@ -1,0 +1,220 @@
+{
+	"info": {
+		"_postman_id": "2bb7eefb-f09d-48cf-88ba-4c3f7acded63",
+		"name": "StarWars-API",
+		"description": "Tests for the StarWars API app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get planets",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Content-Type header is application/json\", () => {",
+							"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+							"});",
+							"",
+							"pm.test(\"Response has a list of results\", () => {",
+							"    pm.expect(responseJson.results).to.be.an(\"array\");",
+							"});",
+							"",
+							"pm.test(\"Results are strings\", () => {",
+							"    pm.expect(responseJson.results[0]).to.be.a(\"string\");",
+							"});",
+							"",
+							"pm.test(\"Response has only one result based on the query param\" , () => {",
+							"    pm.expect(responseJson.results.length).to.eql(1);",
+							"    pm.expect(responseJson.results[0]).to.eql(\"Tatooine\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/starwars/planets?name=Tatooine",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"starwars",
+						"planets"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Tatooine"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add planet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type header is application/json\", () => {",
+							"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+							"});",
+							"",
+							"pm.test(\"Response has a list of results\", () => {",
+							"    pm.expect(responseJson.results).to.be.an(\"array\");",
+							"});",
+							"",
+							"pm.test(\"Sent name is added to local store\", () => {",
+							"    pm.expect(responseJson.results).to.include(\"Sharath's planet 2\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Sharath's planet 2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/starwars/planets",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"starwars",
+						"planets"
+					]
+				},
+				"description": "Make sure planets are added"
+			},
+			"response": []
+		},
+		{
+			"name": "Add planet payload validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 400\", () => {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"pm.test(\"Error message is correct\", () => {",
+							"    pm.expect(responseJson.message).to.eql(\"name is required\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"names\": \"Sharath's planet 2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/starwars/planets",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"starwars",
+						"planets"
+					]
+				},
+				"description": "Test that the request of rejected if the payload schema is wrong"
+			},
+			"response": []
+		},
+		{
+			"name": "Get movies",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Content-Type header is application/json\", () => {",
+							"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+							"});",
+							"",
+							"pm.test(\"Response has a list of results\", () => {",
+							"    pm.expect(responseJson.results).to.be.an(\"array\");",
+							"});",
+							"",
+							"pm.test(\"Results are strings\", () => {",
+							"    pm.expect(responseJson.results[0]).to.be.a(\"string\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/starwars/movies",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"starwars",
+						"movies"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
